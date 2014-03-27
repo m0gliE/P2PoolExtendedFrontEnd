@@ -1,2 +1,2 @@
 var siteTitle = "Fastcoin P2Pool";
-var contactAddress = "m0gliEz@gmail.com";
+var contactAddress = "email@address.com";
