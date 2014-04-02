@@ -1,2 +1,2 @@
 var siteTitle = "CasinoCoin P2Pool";
-var contactAddress = "info@circuit-computers.com";
+var contactAddress = "your@email.com";
