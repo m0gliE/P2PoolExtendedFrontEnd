@@ -5,7 +5,6 @@ function LoadData() {
   $("#blocks").html("<tr><th>ID</th><th>Time</th><th>Hash and explorer link</th><th>Share</th></tr>");
   $("#payouts").html("<tr><th>Address</th><th>Amount in <span class=\"symbol\"></span></th></tr>");
   $("#miners").html("<tr><th>Miner</th><th>Hashrate</th><th>Dead hashrate</th></tr>");
-  $("#sharelist").html("<tr><th>Miner</td><th>Payable Shares</th><th>Oldest Share</th><th>Newest Share</th><th>Average time between shares</th></tr>");
 
   function values(o){ res = []; for(var x in o) res.push(o[x]); return res; }
 
@@ -18,11 +17,6 @@ function LoadData() {
     coinSymbol = new String(currency_info.symbol);
 
     d3.json('../current_payouts', function(pays) {
-      d3.json('/payout_addr', function(addr) {
-        d3.select('#payout_addr').text(addr);
-        d3.select('#payout_amount').text(addr in pays ? pays[addr] : 0);
-      });
-
       var arr = []; for(var i in pays) arr.push(i); arr.sort(function(a, b){return pays[b] - pays[a]});
 
       var tr = d3.select('#payouts').selectAll().data(arr).enter().append('tr');
@@ -32,15 +26,6 @@ function LoadData() {
       var total_tr = d3.select('#payouts').append('tr');
       total_tr.append('td').append('strong').text('Total');
       total_tr.append('td').text(d3.sum(arr, function(addr){return pays[addr]}).toFixed(8));
-    });
-
-    d3.json('../share_details', function(shares) {
-	    var tr = d3.select("#sharelist").selectAll().data(shares).enter().append('tr');
-	    tr.append('td').text(function(share) { return share.hash; });
-	    tr.append('td').text(function(share) { return share.count; });
-	    tr.append('td').text(function(share) { return share.oldest; });
-	    tr.append('td').text(function(share) { return share.newest; });
-	    tr.append('td').text(function(share) { return share.average; });
     });
 
     d3.json('../recent_blocks', function(blocks) {
@@ -104,7 +89,7 @@ function UpdateData() {
 
     var time_to_share = local_stats.attempts_to_share/local;
     d3.select('#time_to_share').text(d3.format('.3r')(time_to_share/3600) + " hours");
-    d3.select('#time_to_share_minute').text(d3.format('.3r')(time_to_share / 60) + " minutes");
+    d3.select('#time_to_share_minute').text(d3.format('.3r')(time_to_share / 60) + " ");
 
     d3.json('../global_stats', function(global_stats) {
       d3.select('#pool_rate').text(d3.format('.3s')(global_stats.pool_hash_rate) + 'H/s');
@@ -114,10 +99,6 @@ function UpdateData() {
 
       var time_to_block = local_stats.attempts_to_block/global_stats.pool_hash_rate;
       d3.select('#time_to_block').text(d3.format('.3r')(time_to_block/3600) + " hours");
-      d3.select('#time_to_block_minute').text(d3.format('.3r')(time_to_block / 60) + " minutes");
-
-      var time_to_payout = local_stats.attempts_to_block/global_stats.pool_hash_rate;
-      d3.select('#time_to_payout').text(d3.format('.3r')(time_to_block/60) + " minutes");
 
       d3.select('#expected_payout_amount').text(d3.format('.3r')(local/global_stats.pool_hash_rate*local_stats.block_value*(1-local_stats.donation_proportion)));
 

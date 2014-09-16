@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html><head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-  <title>P2Pool Fastcoin Pool (LTC)</title>
+  <title>P2Pool Fastcoin Pool (FST)</title>
   <link rel="shortcut icon" type="image/png" href="favicon.png" />
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-cyborg.css" />
   <link rel="stylesheet" href="css/jquery.jqplot.min.css" />
   <style type="text/css">
     line {
       shape-rendering:crispEdges;
-      stroke:black;
+      stroke:grey;
       stroke-width:1;
     }
-    text {font:12px Sans-serif;}
+    text {
+	font:12px;
+	Sans-serif;
+        fill:#808080;}
     #specs td {vertical-align:middle;}
     .plotline {
       fill:none;
@@ -26,6 +29,16 @@
   <script type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
   <script type="text/javascript" src="js/contact.js"></script>
   <script type="text/javascript" src="js/top-index.js"></script>
+  <script type="test/javascript">$.getJSON("/recent_blocks", function(json) {
+	if (json.length > 0) {
+            var numberBlock0 = json[0].number;
+            var shortBlock0 = json[0].share.substring(0,7)+"...";
+            var timeBlock0 = new Date(json[0].ts*1000).toLocaleDateString() + " " + new Date(json[0].ts*1000).toLocaleTimeString();
+            $("#blocktext").html("Last Block from P2P Network: <span class=\"label label-custom\">" + timeBlock0 + "</span>");
+            $("#blocktext").addClass("label label-custom");
+	}
+    });
+</script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top" style="position:relative;">
